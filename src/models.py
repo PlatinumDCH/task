@@ -1,6 +1,6 @@
 from typing import Optional
 from sqlalchemy import ForeignKey, String
-from sqlalchemy import Integet
+from sqlalchemy import Integer
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -29,6 +29,6 @@ class Task(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     title: Mapped[str] = mapped_column(String, index=True)
     description: Mapped[str] = mapped_column(String, nullable=True)
-    owner_id: Mapped[int] = mapped_column(Integet, ForeignKey('user_account.id'))
+    owner_id: Mapped[int] = mapped_column(Integer, ForeignKey('user_account.id'))
 
     owner: Mapped['User'] = relationship('User', back_populates='tasks')

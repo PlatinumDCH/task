@@ -5,6 +5,9 @@ from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio import AsyncSession
 
+
+from src.core.config import settings
+
 class DatabaseSessionManager:
     def __init__(self, url: str):
         self._url = url
@@ -52,7 +55,7 @@ class DatabaseSessionManager:
         finally:
             await self.close()
 
-sessionmanager = DatabaseSessionManager('url')
+sessionmanager = DatabaseSessionManager(settings.PG_URL)
 
 async def get_conn_db() -> AsyncGenerator[AsyncSession, None]:
     async with sessionmanager.lifespan():
