@@ -3,6 +3,7 @@ name = "task-project"
 version = "0.1.0"
 description = "managment task"
 authors = ["dima cheban <dimacheban23@gmail.com>"]
+package-mode = false
 readme = "README.md"
 
 [tool.poetry.dependencies]
