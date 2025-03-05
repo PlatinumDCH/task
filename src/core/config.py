@@ -6,9 +6,9 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "PhotoShare"
     PROJECT_VERSION: str = "1"
     PG_DRIVER: str = 'postgresql+asyncpg'
-    PG_USER: str = "test"
-    PG_PASSWORD: str = "test"
-    PG_DATABASE: str = "db"
+    POSTGRES_USER: str = "test"
+    POSTGRES_PASSWORD: str = "test"
+    POSTGRES_DB: str = "db"
     PG_HOST: str = "test"
     PG_PORT: int = 5432
     PG_URL: str = 'postgresql+asyncpg://name:namepass@db:5432/name_database'

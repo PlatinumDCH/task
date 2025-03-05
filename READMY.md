@@ -37,13 +37,28 @@ commands
 docker build -t task_project:latest .
 ```
 
-при першому запуску потрібно вказати супер користувача
+```
+docker-compose down -v  
+docker-compose up -d
+```
+```
+docker-compose down --volumes --remove-orphans
+docker-compose up --build -d
+```
+```
+docker-compose down --volumes --remove-orphans
+docker-compose up --build -d
+```
 
 ```
+docker-compose exec web alembic revision --autogenerate -m "Initial migration"
+docker-compose exec web alembic upgrade head
+```
+```
 .env
-POSTGRES_USER=admin
+POSTGRES_USER=
 POSTGRES_PASSWORD=
-POSTGRES_DB=task_project_database 
+POSTGRES_DB=
 ```
 
 ```
@@ -53,15 +68,9 @@ docker-compose.yaml
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
 ```
-
-стоворити роль адміна
-id_контейнеру = docker ps
-docker exec -it <id container> psql -U <standart role> -d <database name>
-
-
-docker-compose down -v  
-docker-compose up -d
-
-docker-compose down --volumes --remove-orphans
-docker-compose up --build -d
-
+```
+створити нову роль user
+docker exec -it <container_id> psql -U postgres -d task_project_database
+CREATE ROLE "user" WITH LOGIN PASSWORD 'user123';
+GRANT ALL PRIVILEGES ON DATABASE task_project_database TO "user";
+```
