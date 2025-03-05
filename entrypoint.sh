@@ -15,5 +15,5 @@ while ! nc -z $DB_HOST 5432; do
 done
 
 echo "Database is ready!"
-# poetry run alembic upgrade head
+poetry run alembic upgrade head
 exec poetry run uvicorn src.main:app --host 0.0.0.0 --port 8000

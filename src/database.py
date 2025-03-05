@@ -49,7 +49,7 @@ class DatabaseSessionManager:
     
     @contextlib.asynccontextmanager
     async def lifespan(self):
-        await self.initialize()
+        await self._initialize()
         try:
             yield
         finally:
