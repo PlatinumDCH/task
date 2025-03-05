@@ -1,5 +1,6 @@
 from pydantic import BaseModel, field_validator
 from pydantic import EmailStr
+from pydantic import Field
 import re
 
 class PasswordModel(BaseModel):
@@ -26,9 +27,9 @@ class PasswordModel(BaseModel):
         return value
 
 class UsernameModel(BaseModel):
-    username: str
+    name: str
 
-    @field_validator('username')
+    @field_validator('name')
     def username_valid(cls, value):
         if len(value) < 3 or len(value) > 30:
             raise ValueError(
@@ -41,14 +42,31 @@ class UsernameModel(BaseModel):
         return value
 
 class RegisterUserSchema(BaseModel):
-    username: str
+    name: str
     email: EmailStr
-    password: str
+    full_name: str|None
+    password: str = Field(alias='hashed_password')
 
-    @field_validator('username')
+    @field_validator('name')
     def validate_username(cls, value):
-        return UsernameModel(username=value).username
+        return UsernameModel(name=value).name
 
     @field_validator('password')
     def validate_password(cls, value):
         return PasswordModel(password=value).password
+
+    model_config = {
+        "populate_by_name": True,
+        "from_attributes": True,
+        "json_schema_extra": {
+            "example": {
+                "name": "John",
+                "email": "johndoe@example.com",
+                "password": "New123!",
+                "full_name": "John Doe"
+            }
+        }
+    }
+
+class RegisterUserResponseSchema(RegisterUserSchema):
+    pass
