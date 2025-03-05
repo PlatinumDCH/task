@@ -1,4 +1,4 @@
-name: Lint Python Code
+name: Test Python Code
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Установка Poetry
+      - name: install Poetry
         run: pip install poetry
 
       - name: cashind depens Poetry
@@ -33,7 +33,7 @@ jobs:
             poetry-${{ runner.os }}-
 
       - name: Install depends
-        run: poetry install
+        run: poetry install --no-root
 
       - name: Run tests
         run: poetry run pytest

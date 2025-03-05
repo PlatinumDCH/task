@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "managment task"
 authors = ["dima cheban <dimacheban23@gmail.com>"]
 packages = [{include = "src"}]
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -26,3 +25,4 @@ httpx = "^0.28.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+package-mode = false 
