@@ -51,5 +51,16 @@ async def autenticate_user(email, password, session):
         )
     return user
 
-async def get_user_by_username():
-    pass
+async def delete_user(session, user_id):
+    result = await session.execute(select(User).filter(User.id==user_id))
+    user = result.scalars().first()
+
+    if user:
+        await session.delete(user)
+        await session.commit()
+    else:
+        raise HTTPException(
+            status_code=404,
+            detail='Not found'
+        )
+    

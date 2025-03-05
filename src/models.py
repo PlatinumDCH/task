@@ -20,7 +20,8 @@ class User(Base):
     full_name: Mapped[Optional[str]]
     hashed_password: Mapped[str] = mapped_column(String)
 
-    tasks: Mapped['Task'] = relationship('Task', back_populates='owner')
+    tasks: Mapped[list['Task']] = relationship(
+        'Task', back_populates='owner', cascade='all, delete-orphan')
 
 
 class Task(Base):

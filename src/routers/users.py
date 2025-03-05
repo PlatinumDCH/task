@@ -59,7 +59,7 @@ async def login_user(
         token_type=TokenType.ACCESS,
         data={"sub": user.email},
     )
-    
+
     return sch.TokenResponseSchema(
         access_token=encode_access_token,
     ).model_dump()
@@ -71,3 +71,12 @@ async def get_me(user = Depends(auth_service.get_current_user)):
         'email': user.email
     }
 
+@router.delete('/delete-user')
+async def delete_user(
+    user = Depends(auth_service.get_current_user),
+    session = Depends(get_conn_db)
+):
+    await repo_user.delete_user(session, user.id)
+    return {
+        'message': 'User and users tasks delete'
+    }
