@@ -3,5 +3,5 @@ from fastapi import FastAPI
 app = FastAPI()
 
 @app.get('/')
-async def indec():
+async def index():
     return {'message':'home page'}
