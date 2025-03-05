@@ -74,3 +74,20 @@ class RegisterUserResponseSchema(RegisterUserSchema):
 class TokenResponseSchema(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+class TaskCreateSchema(BaseModel):
+    title: str
+    description: str|None
+
+class TaskUpdateSchema(BaseModel):
+    title: str|None
+    description: str|None
+
+class TaskResponseSchema(TaskCreateSchema):
+    id:int = Field(alias='task_id')
+    owner_id: int
+
+    model_config = {
+        "populate_by_name": True,
+        "from_attributes": True,
+    }
