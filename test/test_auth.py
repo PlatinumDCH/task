@@ -1,8 +1,4 @@
-from fastapi.testclient import TestClient
 import pytest
-from src.main import app
-
-
 
 @pytest.mark.asyncio
 async def test_register_user_correct( fastapi_testclient, testdatabase):

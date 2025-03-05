@@ -26,7 +26,7 @@ async def create_task(
     return new_task
 
 async def get_task_by_id(item_id: int, owner_id: int, session):
-    return await get_task_by_id(item_id, owner_id, session)
+    return await get_task_object(item_id, owner_id, session)
 
 async def get_tasks(owner_id: int, session):
     result = await session.execute(select(Task).filter(Task.owner_id == owner_id))
