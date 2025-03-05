@@ -59,16 +59,10 @@ async def login_user(
         token_type=TokenType.ACCESS,
         data={"sub": user.email},
     )
-    encode_refresh_token = await token_manager.create_token(
-        token_type=TokenType.REFRESH,
-        data={"sub": user.email},
-    )
-
-    return {
-        'access_token': encode_access_token,
-        'refresh_token': encode_refresh_token,
-        'token_type': 'Bearer',
-    }
+    
+    return sch.TokenResponseSchema(
+        access_token=encode_access_token,
+    ).model_dump()
 
 @router.get('/me')
 async def get_me(user = Depends(auth_service.get_current_user)):

@@ -70,3 +70,7 @@ class RegisterUserSchema(BaseModel):
 
 class RegisterUserResponseSchema(RegisterUserSchema):
     pass
+
+class TokenResponseSchema(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
