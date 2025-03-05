@@ -1,9 +1,12 @@
+from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from src import get_conn_db
 from src import sch
 
 from src.services.password_hasher import Hasher
+from src.services.token_handler.manager import TokenType, token_manager
+from src.services.auth import auth_service
 import src.repository.user as repo_user
 
 router = APIRouter(prefix='/auth')
@@ -44,8 +47,33 @@ async def register_user(
 
 @router.post('/login')
 async def login_user(
-    form_data: OAuth2PasswordRequestForm = Depends(),
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session = Depends(get_conn_db)
 ):
-    pass
+    user = await repo_user.autenticate_user(
+        form_data.username,
+        form_data.password,
+        session
+    )
+    encode_access_token = await token_manager.create_token(
+        token_type=TokenType.ACCESS,
+        data={"sub": user.email},
+    )
+    encode_refresh_token = await token_manager.create_token(
+        token_type=TokenType.REFRESH,
+        data={"sub": user.email},
+    )
+
+    return {
+        'access_token': encode_access_token,
+        'refresh_token': encode_refresh_token,
+        'token_type': 'Bearer',
+    }
+
+@router.get('/me')
+async def get_me(user = Depends(auth_service.get_current_user)):
+    return {
+        'username': user.name,
+        'email': user.email
+    }
 

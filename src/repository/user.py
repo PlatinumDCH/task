@@ -1,9 +1,16 @@
+from fastapi import HTTPException
 from sqlalchemy import select
 
 from src.models import User
 from src import sch
-async def get_user_by_email():
-    pass
+from src.services.password_hasher import Hasher
+
+async def get_user_by_email(email, session):
+    query = await session.execute(
+        select(User).filter(User.email == email)
+    )
+    user = query.scalars().first()
+    return user
 
 async def exist_user(email, session):
     """
@@ -24,14 +31,25 @@ async def create_new_user(body:sch.RegisterUserSchema, session):
     await session.refresh(new_user)
     return new_user
 
-async def autenticate_user():
+async def autenticate_user(email, password, session):
     """
     Login user
     - get user by email
     - verify password
     Returned False/User
     """
-    pass
+    user = await get_user_by_email(email, session)
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail='User not found'
+        )
+    if not Hasher.verify_password(password, user.hashed_password):
+        raise HTTPException(
+            status_code=400,
+            detail='Bad Request'
+        )
+    return user
 
 async def get_user_by_username():
     pass
