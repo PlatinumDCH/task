@@ -10,8 +10,7 @@ router = APIRouter(prefix='/auth')
 
 @router.post(
         '/register',
-        status_code=200,
-        response_model=sch.RegisterUserResponseSchema
+        status_code=200
     )
 async def register_user(
     body: sch.RegisterUserSchema,
